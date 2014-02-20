@@ -27,7 +27,6 @@ define([
     });
 
     app_router.on('route:doSearch', function(searchTerm){
-      console.log('searchTerm='+searchTerm);
       Todos.applyFilter(searchTerm);
       pageView.searchTermDisplay(searchTerm);
     });
