@@ -18,6 +18,7 @@ define([
       "click button.createTodo":  "createTodo",
       "keypress #new-todo-text": "updateOnEnter",
       "keyup .search": "searchType",
+      "change .search": "searchChange",
       "keyup #new-todo-text": "updateOnType",
       "focus #new-todo-text": "onNewFocus"
     },
@@ -25,7 +26,7 @@ define([
     countersTemplate: _.template(CountersTemplate),
 
     initialize: function() {
-      _.bindAll(this, 'addOne', 'renderCounters', 'updateOnType', 'updateOnEnter','prepareForNewTodo','searchType','searchTermDisplay');
+      _.bindAll(this, 'addOne', 'renderCounters', 'updateOnType', 'updateOnEnter','prepareForNewTodo','searchType','searchChange','searchTermDisplay');
       this.input = this.$("#new-todo-text");
       Todos.bind('add',this.addOne);
       Todos.bind('all',this.renderCounters);
@@ -37,14 +38,22 @@ define([
       this.$(".search").val(term);
     },
 
+    searchChange: function(){
+      var searchTerm=$.trim(this.$(".search").val());
+      Todos.applyFilter(searchTerm);
+      if(searchTerm!='') 
+        Router.navigate('search/'+searchTerm, {replace: true});
+      else 
+        Router.navigate('');
+    },
+
     searchType: _.debounce(function(){
       var searchTerm=$.trim(this.$(".search").val());
+      Todos.applyFilter(searchTerm);
       if(searchTerm!='') 
-        Router.navigate('search/'+searchTerm, {trigger: true});
-      else { 
-        Todos.applyFilter('');
+        Router.navigate('search/'+searchTerm, {replace: true});
+      else 
         Router.navigate('');
-      }
     }, 500),
 
     updateOnType: function() {
