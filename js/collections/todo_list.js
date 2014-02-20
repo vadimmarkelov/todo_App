@@ -8,13 +8,13 @@ define([
 	var TodosCollection = Backbone.Collection.extend({
     model: Todo,
     localStorage: new Store("todos"),
-    done: function() {
+    done: function() {  //calculate how much is done
       return this.filter(function(item){ return item.get('done'); });
     },
-    undone: function() {
+    undone: function() { //calculate ho much is undone
       return this.without.apply(this, this.done());
     },
-    applyFilter: function(term){
+    applyFilter: function(term){  
       this.each(function(item){item.applyFilter(term)});
     }
 

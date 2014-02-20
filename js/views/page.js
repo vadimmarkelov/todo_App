@@ -1,4 +1,4 @@
-define([
+define([ // main page of App
   'jquery',
   'underscore', 
   'backbone',
@@ -15,15 +15,15 @@ define([
     el: $("#todoapp"),
 
     events: {
-      "click button.createTodo":  "createTodo",
-      "keypress #new-todo-text": "updateOnEnter",
-      "keyup .search": "searchType",
-      "change .search": "searchChange",
-      "keyup #new-todo-text": "updateOnType",
-      "focus #new-todo-text": "onNewFocus"
+      "click button.createTodo":  "createTodo",   //save ToDo by button
+      "keypress #new-todo-text": "updateOnEnter", //save ToDo by ENTER
+      "keyup .search": "searchType", //live update of filter
+      "change .search": "searchChange", 
+      "keyup #new-todo-text": "updateOnType", //to enable/disable ADD button if empty string
+      "focus #new-todo-text": "onNewFocus" //to update Router in case of focus come to main input field
     },
 
-    countersTemplate: _.template(CountersTemplate),
+    countersTemplate: _.template(CountersTemplate), //precompile template for main counter (progress indicator)
 
     initialize: function() {
       _.bindAll(this, 'addOne', 'renderCounters', 'updateOnType', 'updateOnEnter','prepareForNewTodo','searchType','searchChange','searchTermDisplay');
@@ -31,23 +31,23 @@ define([
       Todos.bind('add',this.addOne);
       Todos.bind('all',this.renderCounters);
       
-      Todos.fetch();
+      Todos.fetch();  //get all items from data storage
     },
 
-    searchTermDisplay: function(term){
+    searchTermDisplay: function(term){ //display search term on UI in case land to search mode by direct URL
       this.$(".search").val(term);
     },
 
     searchChange: function(){
-      var searchTerm=$.trim(this.$(".search").val());
+      var searchTerm=$.trim(this.$(".search").val()); //clear search term from trash
       Todos.applyFilter(searchTerm);
       if(searchTerm!='') 
         Router.navigate('search/'+searchTerm, {replace: true});
       else 
-        Router.navigate('');
+        Router.navigate(''); //user is leaving Searh state and go to Main state
     },
 
-    searchType: _.debounce(function(){
+    searchType: _.debounce(function(){  //do search only after timeout, prevent performance issues in case of to rapid typing
       var searchTerm=$.trim(this.$(".search").val());
       Todos.applyFilter(searchTerm);
       if(searchTerm!='') 
@@ -56,14 +56,11 @@ define([
         Router.navigate('');
     }, 500),
 
-    updateOnType: function() {
-      if($.trim(this.input.val())=='')
-        this.$("button.createTodo").prop('disabled',true);
-      else
-        this.$("button.createTodo").prop('disabled',false);
+    updateOnType: function() {  //enable/disable Add button if text is empty
+        this.$("button.createTodo").prop('disabled',($.trim(this.input.val())==''));
     },
 
-    updateOnEnter: function(e) {
+    updateOnEnter: function(e) { 
       if (e.keyCode == 13) this.createTodo();
     },
 
@@ -74,28 +71,28 @@ define([
       }));
     },
 
-    addOne: function(todo) {
+    addOne: function(todo) { //put one item to the DOM
       var view = new TodoView({model: todo});
       this.$("#todos").prepend(view.render().el);
       Router.navigate('');
     },
 
-    onNewFocus: function() {
+    onNewFocus: function() { //Main state of App initiated by focus to main input field
       Router.navigate('');
     },
 
-    prepareForNewTodo: function(){
+    prepareForNewTodo: function(){  //clear input after creation of new ToDo item
       this.$("#new-todo-text").focus();
     },
 
     createTodo: function() {
       var newTodo= new Todo({
-        id: _.uniqueId(),
-        content: this.input.val(),
+        id: _.uniqueId(), //TODO: this ID should be replaced by proper source (can create cdata onsistency issues) !!!!
+        content: $.trim(this.input.val()),
         done:    false
       });
       Todos.add(newTodo);
-      Todos.sync("create", newTodo, {success: function(){}});
+      Todos.sync("create", newTodo, {success: function(){}}); //save item to data storage
       this.input.val('');
     },
 

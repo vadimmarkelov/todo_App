@@ -5,7 +5,7 @@ define(['underscore', 'backbone'], function(_, Backbone) {
       id: null,
       content: "",
       done: false,
-      visible: true
+      visible: true //used by Filter
     },
 
     initialize: function() {
@@ -17,16 +17,16 @@ define(['underscore', 'backbone'], function(_, Backbone) {
     },
 
     updateStorage: function(){
-      this.collection.sync("update", this, {success: function(){}});
+      this.collection.sync("update", this, {success: function(){}});  //save to data storage on update
     },
 
     applyFilter: function(term){
-      this.set('visible',(this.get('content').indexOf(term)>-1 || term=='')?true:false)
+      this.set('visible',(this.get('content').indexOf(term)>-1 || term=='')?true:false); //filter rule
     },
 
-    clear: function() {
-      this.view.remove();
-      this.destroy();
+    clear: function() { 
+      this.view.remove(); //remove from DOM
+      this.destroy(); //remove from collection (and data storage)
     }
 
   });

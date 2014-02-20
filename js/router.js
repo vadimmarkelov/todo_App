@@ -8,9 +8,9 @@ define([
   
   var AppRouter = Backbone.Router.extend({
     routes: {
-      'todo/:id': 'showTodo',
-      'search/:term': 'doSearch',
-      '*actions': 'defaultAction'
+      'todo/:id': 'showTodo',     //this is to set focus to one of the items in list
+      'search/:term': 'doSearch', //this one for search on list of items
+      '*actions': 'defaultAction' 
     }
   });
   
@@ -20,19 +20,19 @@ define([
     var app_router = new AppRouter();
   
     app_router.on('route:showTodo', function(id){
-        var item=Todos.find(function(item){return item.get("id")==id;});
+        var item=Todos.find(function(item){return item.get("id")==id;}); //search for item by ID
         if(item){
-          item.view.putFocus();
+          item.view.putFocus(); //focus user attention to one of items
         }
     });
 
     app_router.on('route:doSearch', function(searchTerm){
-      Todos.applyFilter(searchTerm);
-      pageView.searchTermDisplay(searchTerm);
+      Todos.applyFilter(searchTerm);            //make some of items visible according to the filter
+      pageView.searchTermDisplay(searchTerm);   //in case user land to the App by search URL - display search term
     });
 
     app_router.on('route:defaultAction', function (actions) {
-        pageView.prepareForNewTodo();
+        pageView.prepareForNewTodo(); //put focus to main input field
     });
 
     Backbone.history.start();
