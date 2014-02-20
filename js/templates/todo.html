@@ -1,0 +1,12 @@
+<div class="row <%= visible ? '' : 'hidden' %>">
+    <div class="input-group <%= done ? 'done' : '' %>">
+      <span class="input-group-addon <%= done ? 'progress-bar-success' : '' %>">
+        <input class="check" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
+      </span>
+      <input type="text" class="form-control todo-input-text" value="<%= content %>" />
+      <span class="input-group-btn">
+        <button class="btn btn-default removeButton" type="button"><span class="glyphicon glyphicon-remove-circle"></span></button>
+      </span>
+    </div>
+</div>
+

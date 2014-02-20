@@ -1,0 +1,44 @@
+.row {
+	margin-bottom: 5px;
+}
+
+.done input {
+	text-decoration: line-through;
+}
+
+#todoapp {
+	margin: 0 auto;
+	width: 500px;
+}
+
+.content {
+	padding: 0 15px;
+}
+
+.title {
+	position: relative;
+}
+
+.search {
+    border: medium none;
+    border-radius: 5em;
+    box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.3) inset;
+    color: #333;
+    height: 1.71429em;
+    line-height: 1.42857;
+    padding: 2px 10px;
+    vertical-align: baseline;
+    width: 170px;
+    outline: none;
+    position: absolute;
+	top: 0;
+	right: 0;
+}
+
+.hidden {
+	display: none;
+}
+
+input[type=text]::-ms-clear {
+    display: none;
+}
