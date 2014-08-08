@@ -14,4 +14,4 @@ User Stories
 3. As A User, I want to mark and unmark ToDos as ‘Done’
 4. As A User, I want to have my ToDos persisted so I don’t have to enter them again if I reload the browser
 
-Result: http://vadimmarkelov.github.io/todo/
+Result: http://vadimmarkelov.github.io/todo_App/
